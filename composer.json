@@ -11,9 +11,9 @@
   ],
   "require": {
     "php": ">=5.3.9",
-    "monolog/monolog": "~1.5",
-    "pimple/pimple": "~1.0",
-    "guzzle/guzzle": "~3.7",
+    "monolog/monolog": "~1.7",
+    "pimple/pimple": "~1.1",
+    "guzzle/guzzle": "~3.8",
     "psr/log": "~1.0",
     "ext-curl": "*"
   },
