@@ -4,7 +4,7 @@ vendor/
 composer.phar
 
 #editor related
-.idea
+.idea/
 
 # OS generated files
 .DS_Store
