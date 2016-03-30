@@ -14,6 +14,7 @@ use Elasticsearch\Endpoints;
 use Elasticsearch\Namespaces\ClusterNamespace;
 use Elasticsearch\Namespaces\IndicesNamespace;
 use Elasticsearch\Transport;
+use Elasticsearch\TransportNoBlocking;
 use Psr\Log;
 use Pimple;
 
@@ -238,7 +239,7 @@ class DICBuilder
     {
         $this->dic['transport'] = $this->dic->share(
             function ($dicParams) use ($hosts) {
-                return new Transport($hosts, $dicParams, $dicParams['logObject']);
+                return new TransportNoBlocking($hosts, $dicParams, $dicParams['logObject']);
             }
         );
     }

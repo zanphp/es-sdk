@@ -74,23 +74,22 @@ class Client
 
     /**
      *
-     *
+     * @param $callback
      * @return array
      */
-    public function info()
+    public function info(Callable $callback)
     {
-
         /** @var callback $endpointBuilder */
         $endpointBuilder = $this->dicEndpoints;
 
         /** @var \Elasticsearch\Endpoints\Info $endpoint */
         $endpoint = $endpointBuilder('Info');
-        $response = $endpoint->performRequest();
-        return $response['data'];
+        $endpoint->setCallback($callback);
+        $endpoint->performRequest();
     }
 
 
-    public function ping()
+    public function ping(Callable $callback)
     {
 
         /** @var callback $endpointBuilder */
@@ -98,17 +97,11 @@ class Client
 
         /** @var \Elasticsearch\Endpoints\Ping $endpoint */
         $endpoint = $endpointBuilder('Ping');
-
+        $endpoint->setCallback($callback);
         try {
-            $response = $endpoint->performRequest();
+            $endpoint->performRequest();
         } catch (Missing404Exception $exception) {
-            return false;
-        }
-
-        if (isset($response['status']) === true && $response['status'] === 200) {
-            return true;
-        } else {
-            return false;
+            return null;
         }
     }
 
@@ -129,10 +122,11 @@ class Client
      *        ['_source_include'] = (list) A list of fields to extract and return from the _source field
      *
      * @param $params array Associative array of parameters
+     * @param $callback Callable
      *
      * @return array
      */
-    public function get($params)
+    public function get($params, Callable $callback)
     {
         $id = $this->extractArgument($params, 'id');
         unset($params['id']);
@@ -153,8 +147,8 @@ class Client
                  ->setIndex($index)
                  ->setType($type);
         $endpoint->setParams($params);
-        $response = $endpoint->performRequest();
-        return $response['data'];
+        $endpoint->setCallback($callback);
+        $endpoint->performRequest();
     }
 
 
@@ -170,10 +164,11 @@ class Client
      *        ['routing']        = (string) Specific routing value
      *
      * @param $params array Associative array of parameters
+     * @param $callback Callable
      *
      * @return array
      */
-    public function getSource($params)
+    public function getSource($params, Callable $callback)
     {
         $id = $this->extractArgument($params, 'id');
         unset($params['id']);
@@ -195,8 +190,8 @@ class Client
                  ->setType($type)
                  ->returnOnlySource();
         $endpoint->setParams($params);
-        $response = $endpoint->performRequest();
-        return $response['data'];
+        $endpoint->setCallback($callback);
+        $endpoint->performRequest();
     }
 
 
@@ -213,10 +208,11 @@ class Client
      *        ['version_type'] = (enum) Specific version type
      *
      * @param $params array Associative array of parameters
+     * @param $callback Callable
      *
      * @return array
      */
-    public function delete($params)
+    public function delete($params, Callable $callback)
     {
         $id = $this->extractArgument($params, 'id');
         unset($params['id']);
@@ -237,17 +233,18 @@ class Client
                  ->setIndex($index)
                  ->setType($type);
         $endpoint->setParams($params);
-        $response = $endpoint->performRequest();
-        return $response['data'];
+        $endpoint->setCallback($callback);
+        $endpoint->performRequest();
     }
 
 
     /**
      * @param array $params
+     * @param Callable $callback
      *
      * @return array
      */
-    public function deleteByQuery($params = array())
+    public function deleteByQuery($params = array(), Callable $callback)
     {
         $index = $this->extractArgument($params, 'index');
         unset($params['index']);
@@ -268,8 +265,8 @@ class Client
                 ->setType($type)
                 ->setBody($body);
         $endpoint->setParams($params);
-        $response = $endpoint->performRequest();
-        return $response['data'];
+        $endpoint->setCallback($callback);
+        $endpoint->performRequest();
     }
 
 
@@ -284,10 +281,11 @@ class Client
      *        ['body']           = (array) A query to restrict the results (optional)
      *
      * @param $params array Associative array of parameters
+     * @param $callback Callable
      *
      * @return array
      */
-    public function count($params = array())
+    public function count($params = array(), Callable $callback)
     {
         $index = $this->extractArgument($params, 'index');
         unset($params['index']);
@@ -308,8 +306,8 @@ class Client
                  ->setType($type)
                  ->setBody($body);
         $endpoint->setParams($params);
-        $response = $endpoint->performRequest();
-        return $response['data'];
+        $endpoint->setCallback($callback);
+        $endpoint->performRequest();
     }
 
 
@@ -320,10 +318,11 @@ class Client
      *        ['body']         = (array) The document (`doc`) to percolate against registered queries; optionally also a `query` to limit the percolation to specific registered queries
      *
      * @param $params array Associative array of parameters
+     * @param $callback Callable
      *
      * @return array
      */
-    public function percolate($params)
+    public function percolate($params, Callable $callback)
     {
         $index = $this->extractArgument($params, 'index');
         unset($params['index']);
@@ -344,8 +343,8 @@ class Client
                  ->setType($type)
                  ->setBody($body);
         $endpoint->setParams($params);
-        $response = $endpoint->performRequest();
-        return $response['data'];
+        $endpoint->setCallback($callback);
+        $endpoint->performRequest();
     }
 
 
@@ -360,10 +359,11 @@ class Client
      *        ['routing']    = (string) Specific routing value
      *
      * @param $params array Associative array of parameters
+     * @param $callback Callable
      *
      * @return array
      */
-    public function exists($params)
+    public function exists($params, Callable $callback)
     {
         $id = $this->extractArgument($params, 'id');
         unset($params['id']);
@@ -384,20 +384,14 @@ class Client
                  ->setIndex($index)
                  ->setType($type);
         $endpoint->setParams($params);
+        $endpoint->setCallback($callback);
 
         try {
-            $response = $endpoint->performRequest();
+            $endpoint->performRequest();
         } catch (Missing404Exception $exception) {
-            return false;
+            return null;
         } catch (RoutingMissingException $exception) {
-            return false;
-        }
-
-
-        if ($response['status'] === 200) {
-            return true;
-        } else {
-            return false;
+            return null;
         }
     }
 
@@ -428,10 +422,11 @@ class Client
      *        ['body']                   = (array) A specific search request definition
      *
      * @param $params array Associative array of parameters
+     * @param $callback Callable
      *
      * @return array
      */
-    public function mlt($params)
+    public function mlt($params, Callable $callback)
     {
         $id = $this->extractArgument($params, 'id');
         unset($params['id']);
@@ -456,8 +451,8 @@ class Client
                  ->setType($type)
                  ->setBody($body);
         $endpoint->setParams($params);
-        $response = $endpoint->performRequest();
-        return $response['data'];
+        $endpoint->setCallback($callback);
+        $endpoint->performRequest();
     }
 
 
@@ -476,10 +471,11 @@ class Client
      *        ['_source_include'] = (list) A list of fields to extract and return from the _source field
      *
      * @param $params array Associative array of parameters
+     * @param $callback Callable Associative array of parameters
      *
      * @return array
      */
-    public function mget($params = array())
+    public function mget($params = array(), Callable $callback)
     {
         $index = $this->extractArgument($params, 'index');
         unset($params['index']);
@@ -500,8 +496,8 @@ class Client
                  ->setType($type)
                  ->setBody($body);
         $endpoint->setParams($params);
-        $response = $endpoint->performRequest();
-        return $response['data'];
+        $endpoint->setCallback($callback);
+        $endpoint->performRequest();
     }
 
 
@@ -512,10 +508,11 @@ class Client
      *        ['body']        = (array|string) The request definitions (metadata-search request definition pairs), separated by newlines
      *
      * @param $params array Associative array of parameters
+     * @param $callback Callable
      *
      * @return array
      */
-    public function msearch($params = array())
+    public function msearch($params = array(), Callable $callback)
     {
         $index = $this->extractArgument($params, 'index');
         unset($params['index']);
@@ -536,8 +533,8 @@ class Client
                  ->setType($type)
                  ->setBody($body);
         $endpoint->setParams($params);
-        $response = $endpoint->performRequest();
-        return $response['data'];
+        $endpoint->setCallback($callback);
+        $endpoint->performRequest();
     }
 
 
@@ -559,10 +556,11 @@ class Client
      *        ['body']         = (array) The document
      *
      * @param $params array Associative array of parameters
+     * @param $callback Callable
      *
      * @return array
      */
-    public function create($params)
+    public function create($params, Callable $callback)
     {
         $id = $this->extractArgument($params, 'id');
         unset($params['id']);
@@ -588,8 +586,8 @@ class Client
                  ->setBody($body)
                  ->createIfAbsent();
         $endpoint->setParams($params);
-        $response = $endpoint->performRequest();
-        return $response['data'];
+        $endpoint->setCallback($callback);
+        $endpoint->performRequest();
     }
 
 
@@ -602,10 +600,11 @@ class Client
      *        ['body']        = (string) Default document type for items which don't provide one
      *
      * @param $params array Associative array of parameters
+     * @param $callback Callable
      *
      * @return array
      */
-    public function bulk($params = array())
+    public function bulk($params = array(), Callable $callback)
     {
         $index = $this->extractArgument($params, 'index');
         unset($params['index']);
@@ -626,8 +625,8 @@ class Client
                  ->setType($type)
                  ->setBody($body);
         $endpoint->setParams($params);
-        $response = $endpoint->performRequest();
-        return $response['data'];
+        $endpoint->setCallback($callback);
+        $endpoint->performRequest();
     }
 
 
@@ -650,10 +649,11 @@ class Client
      *        ['body']         = (array) The document
      *
      * @param $params array Associative array of parameters
+     * @param $callback Callable
      *
      * @return array
      */
-    public function index($params)
+    public function index($params, Callable $callback)
     {
         $id = $this->extractArgument($params, 'id');
         unset($params['id']);
@@ -678,8 +678,8 @@ class Client
                  ->setType($type)
                  ->setBody($body);
         $endpoint->setParams($params);
-        $response = $endpoint->performRequest();
-        return $response;
+        $endpoint->setCallback($callback);
+        $endpoint->performRequest();
     }
 
 
@@ -692,10 +692,11 @@ class Client
      *        ['body']           = (array) The request definition
      *
      * @param $params array Associative array of parameters
+     * @param $callback Callable
      *
      * @return array
      */
-    public function suggest($params = array())
+    public function suggest($params = array(), Callable $callback)
     {
         $index = $this->extractArgument($params, 'index');
         unset($params['index']);
@@ -712,8 +713,8 @@ class Client
         $endpoint->setIndex($index)
                  ->setBody($body);
         $endpoint->setParams($params);
-        $response = $endpoint->performRequest();
-        return $response['data'];
+        $endpoint->setCallback($callback);
+        $endpoint->performRequest();
     }
 
 
@@ -739,10 +740,11 @@ class Client
      *        ['body']                     = (string) The URL-encoded query definition (instead of using the request body)
      *
      * @param $params array Associative array of parameters
+     * @param $callback Callable
      *
      * @return array
      */
-    public function explain($params)
+    public function explain($params, Callable $callback)
     {
         $id = $this->extractArgument($params, 'id');
         unset($params['id']);
@@ -767,8 +769,8 @@ class Client
                  ->setType($type)
                  ->setBody($body);
         $endpoint->setParams($params);
-        $response = $endpoint->performRequest();
-        return $response['data'];
+        $endpoint->setCallback($callback);
+        $endpoint->performRequest();
     }
 
 
@@ -807,10 +809,11 @@ class Client
      *        ['body']                     = (array|string) The search definition using the Query DSL
      *
      * @param $params array Associative array of parameters
+     * @param $callback Callable
      *
      * @return array
      */
-    public function search($params = array())
+    public function search($params = array(), Callable $callback)
     {
         $index = $this->extractArgument($params, 'index');
         unset($params['index']);
@@ -831,8 +834,8 @@ class Client
                  ->setType($type)
                  ->setBody($body);
         $endpoint->setParams($params);
-        $response = $endpoint->performRequest();
-        return isset($response['data']) ? $response['data'] : [] ;
+        $endpoint->setCallback($callback);
+        $endpoint->performRequest();
     }
 
 
@@ -842,10 +845,11 @@ class Client
      *        ['body']      = (string) The scroll ID for scrolled search
      *
      * @param $params array Associative array of parameters
+     * @param $callback Callable
      *
      * @return array
      */
-    public function scroll($params = array())
+    public function scroll($params = array(), Callable $callback)
     {
         $scrollID = $this->extractArgument($params, 'scroll_id');
         unset($params['scroll_id']);
@@ -862,8 +866,8 @@ class Client
         $endpoint->setScrollID($scrollID)
                  ->setBody($body);
         $endpoint->setParams($params);
-        $response = $endpoint->performRequest();
-        return $response['data'];
+        $endpoint->setCallback($callback);
+        $endpoint->performRequest();
     }
 
 
@@ -888,10 +892,11 @@ class Client
      *        ['body']              = (array) The request definition using either `script` or partial `doc`
      *
      * @param $params array Associative array of parameters
+     * @param $callback Callable
      *
      * @return array
      */
-    public function update($params)
+    public function update($params, Callable $callback)
     {
         $id = $this->extractArgument($params, 'id');
         unset($params['id']);
@@ -916,8 +921,8 @@ class Client
                  ->setType($type)
                  ->setBody($body);
         $endpoint->setParams($params);
-        $response = $endpoint->performRequest();
-        return $response['data'];
+        $endpoint->setCallback($callback);
+        $endpoint->performRequest();
     }
 
 

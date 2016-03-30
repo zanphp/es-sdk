@@ -75,4 +75,16 @@ class Delete extends AbstractEndpoint
     {
         return 'DELETE';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCallback(Callable $callback)
+    {
+        $this->callback = function($response) use ($callback) {
+            call_user_func($callback, $response['data']);
+        };
+
+        return $this;
+    }
 }
