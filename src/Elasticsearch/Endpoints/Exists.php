@@ -78,7 +78,7 @@ class Exists extends AbstractEndpoint
     public function setCallback(Callable $callback)
     {
         $this->callback = function($response) use ($callback) {
-            if (isset($response['status']) === true && $response['status'] === 200) {
+            if (isset($response['found']) === true && $response['found'] === true) {
                 $result = true;
             } else {
                 $result = false;

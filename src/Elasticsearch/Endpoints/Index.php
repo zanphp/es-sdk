@@ -150,8 +150,7 @@ class Index extends AbstractEndpoint
     public function setCallback(Callable $callback)
     {
         $this->callback = function($response) use ($callback) {
-            $response = isset($response['data']) ? $response['data'] : $response;
-            call_user_func($callback, $response['data']);
+            call_user_func($callback, $response);
         };
 
         return $this;

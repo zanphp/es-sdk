@@ -89,7 +89,7 @@ class Msearch extends AbstractEndpoint implements BulkEndpointInterface
     public function setCallback(Callable $callback)
     {
         $this->callback = function($response) use ($callback) {
-            call_user_func($callback, $response['data']);
+            call_user_func($callback, $response);
         };
 
         return $this;

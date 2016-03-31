@@ -22,7 +22,8 @@ class SwooleConnection
             'Host' => $host,
             'User-Agent' => self::USER_AGENT,
             'Accept' => self::ACCEPT,
-            'Accept-Encoding' => self::ACCEPT_ENCODING
+            'Accept-Encoding' => self::ACCEPT_ENCODING,
+            ''
         ]);
         $this->client = $client;
     }
@@ -41,19 +42,21 @@ class SwooleConnection
 
     public function setData($data)
     {
-//        $this->client->setData($data);
+        $this->client->setData($data);
         $this->data = $data;
         return $this;
     }
 
     public function handle(callable $callback)
     {
-//        if ($this->method == 'GET') {
-//            $this->client->get($this->uri, $callback);
-//        } else {
+        if ($this->method == 'POST') {
             $this->client->post($this->uri, $this->data, function($client) use ($callback){
                 call_user_func($callback, $client->body);
             });
-//        }
+        } else {
+            $this->client->get($this->uri, function($client) use ($callback){
+                call_user_func($callback, $client->body);
+            });
+        }
     }
 }
