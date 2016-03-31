@@ -46,4 +46,21 @@ class Ping extends AbstractEndpoint
     {
         return 'HEAD';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCallback(Callable $callback)
+    {
+        $this->callback = function($response) use ($callback) {
+            if (isset($response['status']) === true && $response['status'] === 200) {
+                $result = true;
+            } else {
+                $result = false;
+            }
+            call_user_func($callback, $result);
+        };
+
+        return $this;
+    }
 }

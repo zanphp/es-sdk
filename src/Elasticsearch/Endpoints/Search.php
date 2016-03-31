@@ -93,7 +93,19 @@ class Search extends AbstractEndpoint
      */
     protected function getMethod()
     {
-        return 'GET';
+        //wtf 到底是post还是get?
+        return 'POST';
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function setCallback(Callable $callback)
+    {
+        $this->callback = function($response) use ($callback) {
+            call_user_func($callback, $response);
+        };
+
+        return $this;
+    }
 }

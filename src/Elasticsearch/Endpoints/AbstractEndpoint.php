@@ -9,7 +9,7 @@ namespace Elasticsearch\Endpoints;
 
 
 use Elasticsearch\Common\Exceptions\UnexpectedValueException;
-use Elasticsearch\Transport;
+use Elasticsearch\TransportNoBlocking;
 
 /**
  * Class AbstractEndpoint
@@ -17,7 +17,7 @@ use Elasticsearch\Transport;
  */
 abstract class AbstractEndpoint
 {
-    /** @var array  */
+    /** @var array */
     protected $params = array();
 
     /** @var  string */
@@ -35,12 +35,13 @@ abstract class AbstractEndpoint
     /** @var  array */
     protected $body = null;
 
-    /** @var \Elasticsearch\Transport  */
+    /** @var \Elasticsearch\TransportNoBlocking */
     private $transport = null;
 
-    /** @var array  */
+    /** @var array */
     private $ignore = null;
 
+    protected $callback;
 
     /**
      * @return string[]
@@ -60,13 +61,20 @@ abstract class AbstractEndpoint
     abstract protected function getMethod();
 
     /**
-     * @param Transport $transport
+     * 设置非阻塞回调函数
+     * @param callable $callback
+     *
+     * @return $this
+     */
+    abstract public function setCallback(callable $callback);
+
+    /**
+     * @param TransportNoBlocking $transport
      */
     public function __construct($transport)
     {
         $this->transport = $transport;
     }
-
 
     /**
      *
@@ -75,10 +83,8 @@ abstract class AbstractEndpoint
      */
     public function performRequest()
     {
-        $result = array();
-
         try {
-            $result =  $this->transport->performRequest(
+            $this->transport->setCallback($this->callback)->performRequest(
                 $this->getMethod(),
                 $this->getURI(),
                 $this->params,
@@ -95,9 +101,6 @@ abstract class AbstractEndpoint
                 return array('data' => array());
             }
         }
-
-        return $result;
-
     }
 
     /**
