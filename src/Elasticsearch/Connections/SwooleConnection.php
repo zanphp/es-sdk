@@ -49,12 +49,12 @@ class SwooleConnection
 
     public function handle(callable $callback)
     {
-        if ($this->method == 'POST') {
-            $this->client->post($this->uri, $this->data, function($client) use ($callback){
+        if ($this->method == 'GET' or $this->method == 'HEAD') {
+            $this->client->get($this->uri, function($client) use ($callback){
                 call_user_func($callback, $client->body);
             });
         } else {
-            $this->client->get($this->uri, function($client) use ($callback){
+            $this->client->post($this->uri, $this->data, function($client) use ($callback){
                 call_user_func($callback, $client->body);
             });
         }
