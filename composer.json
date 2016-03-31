@@ -1,5 +1,5 @@
 {
-    "name": "yz-elasticsearch",
+    "name": "yz-elasticsearch/yz-elasticsearch-client",
     "description": "PHP No Blocking Client for Elasticsearch",
     "keywords": [
         "search",
