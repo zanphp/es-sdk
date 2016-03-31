@@ -4,7 +4,7 @@
     "keywords": [
         "search",
         "client",
-        "elasticsearch"
+        "yz-elasticsearch"
     ],
     "type": "library",
     "license": "Apache 2",
