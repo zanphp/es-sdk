@@ -1,6 +1,6 @@
 {
-    "name": "elasticsearch/elasticsearch",
-    "description": "PHP Client for Elasticsearch",
+    "name": "yz-elasticsearch",
+    "description": "PHP No Blocking Client for Elasticsearch",
     "keywords": [
         "search",
         "client",
