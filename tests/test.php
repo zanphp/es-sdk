@@ -212,7 +212,7 @@ function test ()
     );
     $client = new Elasticsearch\Client($params);
 
-    $client->ping(function($data){
+    $client->search($search, function($data){
         var_dump($data);exit;
        var_dump(array_keys($data));
     });

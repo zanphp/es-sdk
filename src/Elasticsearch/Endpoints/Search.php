@@ -93,7 +93,8 @@ class Search extends AbstractEndpoint
      */
     protected function getMethod()
     {
-        return 'GET';
+        //wtf 到底是post还是get?
+        return 'POST';
     }
 
     /**
