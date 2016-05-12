@@ -47,6 +47,7 @@ class DICBuilder
         'connectionPoolParams'  => array(
             'randomizeHosts' => true
         ),
+        'engine'                => 'es',
     );
 
 
