@@ -9,7 +9,8 @@ class SwooleConnection
     const ACCEPT = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8';
     const ACCEPT_ENCODING = 'gzip,deflate';
 
-    private $client;
+    private $host;
+    private $port;
 
     private $method;
     private $uri;
@@ -17,15 +18,8 @@ class SwooleConnection
 
     public function __construct($host, $port)
     {
-        $client = new \swoole_http_client($host, $port);
-        $client->setHeaders([
-            'Host' => $host,
-            'User-Agent' => self::USER_AGENT,
-            'Accept' => self::ACCEPT,
-            'Accept-Encoding' => self::ACCEPT_ENCODING,
-            ''
-        ]);
-        $this->client = $client;
+        $this->host = $host;
+        $this->port = $port;
     }
 
     public function setMethod($method)
@@ -42,21 +36,30 @@ class SwooleConnection
 
     public function setData($data)
     {
-        $this->client->setData($data);
         $this->data = $data;
         return $this;
     }
 
     public function handle(callable $callback)
     {
-        if ($this->method == 'GET' or $this->method == 'HEAD') {
-            $this->client->get($this->uri, function($client) use ($callback){
-                call_user_func($callback, $client->body);
-            });
-        } else {
-            $this->client->post($this->uri, $this->data, function($client) use ($callback){
-                call_user_func($callback, $client->body);
-            });
-        }
+        swoole_async_dns_lookup($this->host, function($host, $ip) use($callback) {
+            $client = new \swoole_http_client($ip, $this->port);
+            $client->setHeaders([
+                'Host' => "$this->host:$this->port",
+                'User-Agent' => self::USER_AGENT,
+                'Accept' => self::ACCEPT,
+                'Accept-Encoding' => self::ACCEPT_ENCODING,
+            ]);
+
+            if ($this->method == 'GET' or $this->method == 'HEAD') {
+                $client->get($this->uri, function($client) use ($callback){
+                    call_user_func($callback, $client->body);
+                });
+            } else {
+                $client->post($this->uri, $this->data, function($client) use ($callback){
+                    call_user_func($callback, $client->body);
+                });
+            }
+        });
     }
 }
