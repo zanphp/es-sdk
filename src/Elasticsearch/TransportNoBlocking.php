@@ -46,6 +46,9 @@ class TransportNoBlocking
             $body = $this->serializer->serialize($body);
         }
 
+        if (is_array($params) && !empty($params)) {
+            $uri .= "?" . http_build_query($params);
+        }
         $connection = new SwooleConnection($this->host['host'], $this->host['port']);
         $connection->setMethod($method)->setUri($uri)->setData($body)->handle($this->getFilterResponseCallback());
     }
