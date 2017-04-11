@@ -54,10 +54,12 @@ class SwooleConnection
             if ($this->method == 'GET' or $this->method == 'HEAD') {
                 $client->get($this->uri, function($client) use ($callback){
                     call_user_func($callback, $client->body);
+                    $client->close();
                 });
             } else {
                 $client->post($this->uri, $this->data, function($client) use ($callback){
                     call_user_func($callback, $client->body);
+                    $client->close();
                 });
             }
         });
