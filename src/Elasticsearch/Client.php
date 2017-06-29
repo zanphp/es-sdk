@@ -994,18 +994,20 @@ class Client
      */
     private function setLogging()
     {
-        if ($this->params['logging'] !== true) {
-            $this->setEmptyLogger();
-            return;
-        }
+        $this->setEmptyLogger();
 
-        if ($this->params['logObject'] === null) {
-           $this->setDefaultLogger();
-        }
-
-        if ($this->params['traceObject'] === null) {
-            $this->setDefaultTracer();
-        }
+//        if ($this->params['logging'] !== true) {
+//            $this->setEmptyLogger();
+//            return;
+//        }
+//
+//        if ($this->params['logObject'] === null) {
+//           $this->setDefaultLogger();
+//        }
+//
+//        if ($this->params['traceObject'] === null) {
+//            $this->setDefaultTracer();
+//        }
 
     }
 

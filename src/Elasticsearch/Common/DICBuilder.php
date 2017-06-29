@@ -8,12 +8,10 @@
 namespace Elasticsearch\Common;
 
 
-use Elasticsearch\Client;
 use Elasticsearch\Common\Exceptions\RuntimeException;
 use Elasticsearch\Endpoints;
 use Elasticsearch\Namespaces\ClusterNamespace;
 use Elasticsearch\Namespaces\IndicesNamespace;
-use Elasticsearch\Transport;
 use Elasticsearch\TransportNoBlocking;
 use Psr\Log;
 use Pimple;
@@ -171,9 +169,9 @@ class DICBuilder
         $this->setTransportObj($hosts);
         $this->setClusterNamespaceObj();
         $this->setIndicesNamespaceObj();
-        $this->setSharedConnectionParamsObj();
-        $this->setCurlMultihandle();
-        $this->setGuzzleClient();
+//        $this->setSharedConnectionParamsObj();
+//        $this->setCurlMultihandle();
+//        $this->setGuzzleClient();
     }
 
     private function setEndpointDICObjects()
