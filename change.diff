@@ -1,0 +1,762 @@
+diff -Nr ./src/Elasticsearch/Client.php /tmp/elasticsearch-php/src/Elasticsearch/Client.php
+77c77
+<      * @param $callback
+---
+>      *
+80c80
+<     public function info(Callable $callback)
+---
+>     public function info()
+81a82
+> 
+87,88c88,89
+<         $endpoint->setCallback($callback);
+<         $endpoint->performRequest();
+---
+>         $response = $endpoint->performRequest();
+>         return $response['data'];
+92c93
+<     public function ping(Callable $callback)
+---
+>     public function ping()
+100c101
+<         $endpoint->setCallback($callback);
+---
+> 
+102c103
+<             $endpoint->performRequest();
+---
+>             $response = $endpoint->performRequest();
+104c105,111
+<             return null;
+---
+>             return false;
+>         }
+> 
+>         if (isset($response['status']) === true && $response['status'] === 200) {
+>             return true;
+>         } else {
+>             return false;
+125d131
+<      * @param $callback Callable
+129c135
+<     public function get($params, Callable $callback)
+---
+>     public function get($params)
+150,151c156,157
+<         $endpoint->setCallback($callback);
+<         $endpoint->performRequest();
+---
+>         $response = $endpoint->performRequest();
+>         return $response['data'];
+167d172
+<      * @param $callback Callable
+171c176
+<     public function getSource($params, Callable $callback)
+---
+>     public function getSource($params)
+193,194c198,199
+<         $endpoint->setCallback($callback);
+<         $endpoint->performRequest();
+---
+>         $response = $endpoint->performRequest();
+>         return $response['data'];
+211d215
+<      * @param $callback Callable
+215c219
+<     public function delete($params, Callable $callback)
+---
+>     public function delete($params)
+236,237c240,241
+<         $endpoint->setCallback($callback);
+<         $endpoint->performRequest();
+---
+>         $response = $endpoint->performRequest();
+>         return $response['data'];
+243d246
+<      * @param Callable $callback
+247c250
+<     public function deleteByQuery($params = array(), Callable $callback)
+---
+>     public function deleteByQuery($params = array())
+268,269c271,272
+<         $endpoint->setCallback($callback);
+<         $endpoint->performRequest();
+---
+>         $response = $endpoint->performRequest();
+>         return $response['data'];
+284d286
+<      * @param $callback Callable
+288c290
+<     public function count($params = array(), Callable $callback)
+---
+>     public function count($params = array())
+309,310c311,312
+<         $endpoint->setCallback($callback);
+<         $endpoint->performRequest();
+---
+>         $response = $endpoint->performRequest();
+>         return $response['data'];
+321d322
+<      * @param $callback Callable
+325c326
+<     public function percolate($params, Callable $callback)
+---
+>     public function percolate($params)
+346,347c347,348
+<         $endpoint->setCallback($callback);
+<         $endpoint->performRequest();
+---
+>         $response = $endpoint->performRequest();
+>         return $response['data'];
+362d362
+<      * @param $callback Callable
+366c366
+<     public function exists($params, Callable $callback)
+---
+>     public function exists($params)
+387d386
+<         $endpoint->setCallback($callback);
+390c389
+<             $endpoint->performRequest();
+---
+>             $response = $endpoint->performRequest();
+392c391
+<             return null;
+---
+>             return false;
+394c393,400
+<             return null;
+---
+>             return false;
+>         }
+> 
+> 
+>         if ($response['status'] === 200) {
+>             return true;
+>         } else {
+>             return false;
+425d430
+<      * @param $callback Callable
+429c434
+<     public function mlt($params, Callable $callback)
+---
+>     public function mlt($params)
+454,455c459,460
+<         $endpoint->setCallback($callback);
+<         $endpoint->performRequest();
+---
+>         $response = $endpoint->performRequest();
+>         return $response['data'];
+474d478
+<      * @param $callback Callable Associative array of parameters
+478c482
+<     public function mget($params = array(), Callable $callback)
+---
+>     public function mget($params = array())
+499,500c503,504
+<         $endpoint->setCallback($callback);
+<         $endpoint->performRequest();
+---
+>         $response = $endpoint->performRequest();
+>         return $response['data'];
+511d514
+<      * @param $callback Callable
+515c518
+<     public function msearch($params = array(), Callable $callback)
+---
+>     public function msearch($params = array())
+536,537c539,540
+<         $endpoint->setCallback($callback);
+<         $endpoint->performRequest();
+---
+>         $response = $endpoint->performRequest();
+>         return $response['data'];
+559d561
+<      * @param $callback Callable
+563c565
+<     public function create($params, Callable $callback)
+---
+>     public function create($params)
+589,590c591,592
+<         $endpoint->setCallback($callback);
+<         $endpoint->performRequest();
+---
+>         $response = $endpoint->performRequest();
+>         return $response['data'];
+603d604
+<      * @param $callback Callable
+607c608
+<     public function bulk($params = array(), Callable $callback)
+---
+>     public function bulk($params = array())
+628,629c629,630
+<         $endpoint->setCallback($callback);
+<         $endpoint->performRequest();
+---
+>         $response = $endpoint->performRequest();
+>         return $response['data'];
+652d652
+<      * @param $callback Callable
+656c656
+<     public function index($params, Callable $callback)
+---
+>     public function index($params)
+681,682c681,682
+<         $endpoint->setCallback($callback);
+<         $endpoint->performRequest();
+---
+>         $response = $endpoint->performRequest();
+>         return $response['data'];
+695d694
+<      * @param $callback Callable
+699c698
+<     public function suggest($params = array(), Callable $callback)
+---
+>     public function suggest($params = array())
+716,717c715,716
+<         $endpoint->setCallback($callback);
+<         $endpoint->performRequest();
+---
+>         $response = $endpoint->performRequest();
+>         return $response['data'];
+743d741
+<      * @param $callback Callable
+747c745
+<     public function explain($params, Callable $callback)
+---
+>     public function explain($params)
+772,773c770,771
+<         $endpoint->setCallback($callback);
+<         $endpoint->performRequest();
+---
+>         $response = $endpoint->performRequest();
+>         return $response['data'];
+812d809
+<      * @param $callback Callable
+816c813
+<     public function search($params = array(), Callable $callback)
+---
+>     public function search($params = array())
+837,838c834,835
+<         $endpoint->setCallback($callback);
+<         $endpoint->performRequest();
+---
+>         $response = $endpoint->performRequest();
+>         return $response['data'];
+848d844
+<      * @param $callback Callable
+852c848
+<     public function scroll($params = array(), Callable $callback)
+---
+>     public function scroll($params = array())
+869,870c865,866
+<         $endpoint->setCallback($callback);
+<         $endpoint->performRequest();
+---
+>         $response = $endpoint->performRequest();
+>         return $response['data'];
+895d890
+<      * @param $callback Callable
+899c894
+<     public function update($params, Callable $callback)
+---
+>     public function update($params)
+924,925c919,920
+<         $endpoint->setCallback($callback);
+<         $endpoint->performRequest();
+---
+>         $response = $endpoint->performRequest();
+>         return $response['data'];
+997c992,999
+<         $this->setEmptyLogger();
+---
+>         if ($this->params['logging'] !== true) {
+>             $this->setEmptyLogger();
+>             return;
+>         }
+> 
+>         if ($this->params['logObject'] === null) {
+>            $this->setDefaultLogger();
+>         }
+999,1010c1001,1003
+< //        if ($this->params['logging'] !== true) {
+< //            $this->setEmptyLogger();
+< //            return;
+< //        }
+< //
+< //        if ($this->params['logObject'] === null) {
+< //           $this->setDefaultLogger();
+< //        }
+< //
+< //        if ($this->params['traceObject'] === null) {
+< //            $this->setDefaultTracer();
+< //        }
+---
+>         if ($this->params['traceObject'] === null) {
+>             $this->setDefaultTracer();
+>         }
+diff -Nr ./src/Elasticsearch/Common/DICBuilder.php /tmp/elasticsearch-php/src/Elasticsearch/Common/DICBuilder.php
+10a11
+> use Elasticsearch\Client;
+15c16
+< use Elasticsearch\TransportNoBlocking;
+---
+> use Elasticsearch\Transport;
+48d48
+<         'engine'                => 'es',
+172,174c172,174
+< //        $this->setSharedConnectionParamsObj();
+< //        $this->setCurlMultihandle();
+< //        $this->setGuzzleClient();
+---
+>         $this->setSharedConnectionParamsObj();
+>         $this->setCurlMultihandle();
+>         $this->setGuzzleClient();
+241c241
+<                 return new TransportNoBlocking($hosts, $dicParams, $dicParams['logObject']);
+---
+>                 return new Transport($hosts, $dicParams, $dicParams['logObject']);
+diff -Nr ./src/Elasticsearch/Connections/SwooleConnection.php /tmp/elasticsearch-php/src/Elasticsearch/Connections/SwooleConnection.php
+1,67d0
+< <?php
+< 
+< namespace Elasticsearch\Connections;
+< 
+< 
+< class SwooleConnection
+< {
+<     const USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.116 Safari/537.36';
+<     const ACCEPT = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8';
+<     const ACCEPT_ENCODING = 'gzip,deflate';
+< 
+<     private $host;
+<     private $port;
+< 
+<     private $method;
+<     private $uri;
+<     private $data = [];
+< 
+<     public function __construct($host, $port)
+<     {
+<         $this->host = $host;
+<         $this->port = $port;
+<     }
+< 
+<     public function setMethod($method)
+<     {
+<         $this->method = $method;
+<         return $this;
+<     }
+< 
+<     public function setUri($uri)
+<     {
+<         $this->uri = $uri;
+<         return $this;
+<     }
+< 
+<     public function setData($data)
+<     {
+<         $this->data = $data;
+<         return $this;
+<     }
+< 
+<     public function handle(callable $callback)
+<     {
+<         swoole_async_dns_lookup($this->host, function($host, $ip) use($callback) {
+<             $client = new \swoole_http_client($ip, $this->port);
+<             $client->setHeaders([
+<                 'Host' => "$this->host:$this->port",
+<                 'User-Agent' => self::USER_AGENT,
+<                 'Accept' => self::ACCEPT,
+<                 'Accept-Encoding' => self::ACCEPT_ENCODING,
+<             ]);
+< 
+<             if ($this->method == 'GET' or $this->method == 'HEAD') {
+<                 $client->get($this->uri, function($client) use ($callback){
+<                     call_user_func($callback, $client->body);
+<                     $client->close();
+<                 });
+<             } else {
+<                 $client->post($this->uri, $this->data, function($client) use ($callback){
+<                     call_user_func($callback, $client->body);
+<                     $client->close();
+<                 });
+<             }
+<         });
+<     }
+< }
+\ No newline at end of file
+diff -Nr ./src/Elasticsearch/Endpoints/AbstractEndpoint.php /tmp/elasticsearch-php/src/Elasticsearch/Endpoints/AbstractEndpoint.php
+12c12
+< use Elasticsearch\TransportNoBlocking;
+---
+> use Elasticsearch\Transport;
+20c20
+<     /** @var array */
+---
+>     /** @var array  */
+38c38
+<     /** @var \Elasticsearch\TransportNoBlocking */
+---
+>     /** @var \Elasticsearch\Transport  */
+41c41
+<     /** @var array */
+---
+>     /** @var array  */
+44d43
+<     protected $callback;
+64,72c63
+<      * 设置非阻塞回调函数
+<      * @param callable $callback
+<      *
+<      * @return $this
+<      */
+<     abstract public function setCallback(callable $callback);
+< 
+<     /**
+<      * @param TransportNoBlocking $transport
+---
+>      * @param Transport $transport
+78a70
+> 
+85a78,79
+>         $result = array();
+> 
+87c81
+<             $this->transport->setCallback($this->callback)->performRequest(
+---
+>             $result =  $this->transport->performRequest(
+103a98,100
+> 
+>         return $result;
+> 
+diff -Nr ./src/Elasticsearch/Endpoints/Bulk.php /tmp/elasticsearch-php/src/Elasticsearch/Endpoints/Bulk.php
+85,96d84
+< 
+<     /**
+<      * {@inheritdoc}
+<      */
+<     public function setCallback(Callable $callback)
+<     {
+<         $this->callback = function($response) use ($callback) {
+<             call_user_func($callback, $response);
+<         };
+< 
+<         return $this;
+<     }
+diff -Nr ./src/Elasticsearch/Endpoints/Count.php /tmp/elasticsearch-php/src/Elasticsearch/Endpoints/Count.php
+70,80d69
+<     /**
+<      * {@inheritdoc}
+<      */
+<     public function setCallback(Callable $callback)
+<     {
+<         $this->callback = function($response) use ($callback) {
+<             call_user_func($callback, $response);
+<         };
+< 
+<         return $this;
+<     }
+diff -Nr ./src/Elasticsearch/Endpoints/Delete.php /tmp/elasticsearch-php/src/Elasticsearch/Endpoints/Delete.php
+78,89d77
+< 
+<     /**
+<      * {@inheritdoc}
+<      */
+<     public function setCallback(Callable $callback)
+<     {
+<         $this->callback = function($response) use ($callback) {
+<             call_user_func($callback, $response);
+<         };
+< 
+<         return $this;
+<     }
+diff -Nr ./src/Elasticsearch/Endpoints/DeleteByQuery.php /tmp/elasticsearch-php/src/Elasticsearch/Endpoints/DeleteByQuery.php
+86,97d85
+< 
+<     /**
+<      * {@inheritdoc}
+<      */
+<     public function setCallback(Callable $callback)
+<     {
+<         $this->callback = function($response) use ($callback) {
+<             call_user_func($callback, $response);
+<         };
+< 
+<         return $this;
+<     }
+diff -Nr ./src/Elasticsearch/Endpoints/Exists.php /tmp/elasticsearch-php/src/Elasticsearch/Endpoints/Exists.php
+74,90d73
+< 
+<     /**
+<      * {@inheritdoc}
+<      */
+<     public function setCallback(Callable $callback)
+<     {
+<         $this->callback = function($response) use ($callback) {
+<             if (isset($response['found']) === true && $response['found'] === true) {
+<                 $result = true;
+<             } else {
+<                 $result = false;
+<             }
+<             call_user_func($callback, $result);
+<         };
+< 
+<         return $this;
+<     }
+diff -Nr ./src/Elasticsearch/Endpoints/Explain.php /tmp/elasticsearch-php/src/Elasticsearch/Endpoints/Explain.php
+106,117d105
+< 
+<     /**
+<      * {@inheritdoc}
+<      */
+<     public function setCallback(Callable $callback)
+<     {
+<         $this->callback = function($response) use ($callback) {
+<             call_user_func($callback, $response);
+<         };
+< 
+<         return $this;
+<     }
+diff -Nr ./src/Elasticsearch/Endpoints/Get.php /tmp/elasticsearch-php/src/Elasticsearch/Endpoints/Get.php
+116,127d115
+< 
+<     /**
+<      * {@inheritdoc}
+<      */
+<     public function setCallback(Callable $callback)
+<     {
+<         $this->callback = function($response) use ($callback) {
+<             call_user_func($callback, $response);
+<         };
+< 
+<         return $this;
+<     }
+diff -Nr ./src/Elasticsearch/Endpoints/Index.php /tmp/elasticsearch-php/src/Elasticsearch/Endpoints/Index.php
+146,157d145
+< 
+<     /**
+<      * {@inheritdoc}
+<      */
+<     public function setCallback(Callable $callback)
+<     {
+<         $this->callback = function($response) use ($callback) {
+<             call_user_func($callback, $response);
+<         };
+< 
+<         return $this;
+<     }
+diff -Nr ./src/Elasticsearch/Endpoints/Info.php /tmp/elasticsearch-php/src/Elasticsearch/Endpoints/Info.php
+49,60d48
+< 
+<     /**
+<      * {@inheritdoc}
+<      */
+<     public function setCallback(Callable $callback)
+<     {
+<         $this->callback = function($response) use ($callback) {
+<             call_user_func($callback, $response);
+<         };
+< 
+<         return $this;
+<     }
+diff -Nr ./src/Elasticsearch/Endpoints/Mget.php /tmp/elasticsearch-php/src/Elasticsearch/Endpoints/Mget.php
+82,92d81
+<     /**
+<      * {@inheritdoc}
+<      */
+<     public function setCallback(Callable $callback)
+<     {
+<         $this->callback = function($response) use ($callback) {
+<             call_user_func($callback, $response);
+<         };
+< 
+<         return $this;
+<     }
+diff -Nr ./src/Elasticsearch/Endpoints/Mlt.php /tmp/elasticsearch-php/src/Elasticsearch/Endpoints/Mlt.php
+111,122d110
+< 
+<     /**
+<      * {@inheritdoc}
+<      */
+<     public function setCallback(Callable $callback)
+<     {
+<         $this->callback = function($response) use ($callback) {
+<             call_user_func($callback, $response);
+<         };
+< 
+<         return $this;
+<     }
+diff -Nr ./src/Elasticsearch/Endpoints/Msearch.php /tmp/elasticsearch-php/src/Elasticsearch/Endpoints/Msearch.php
+85,96d84
+< 
+<     /**
+<      * {@inheritdoc}
+<      */
+<     public function setCallback(Callable $callback)
+<     {
+<         $this->callback = function($response) use ($callback) {
+<             call_user_func($callback, $response);
+<         };
+< 
+<         return $this;
+<     }
+diff -Nr ./src/Elasticsearch/Endpoints/Percolate.php /tmp/elasticsearch-php/src/Elasticsearch/Endpoints/Percolate.php
+85,96d84
+< 
+<     /**
+<      * {@inheritdoc}
+<      */
+<     public function setCallback(Callable $callback)
+<     {
+<         $this->callback = function($response) use ($callback) {
+<             call_user_func($callback, $response);
+<         };
+< 
+<         return $this;
+<     }
+diff -Nr ./src/Elasticsearch/Endpoints/Ping.php /tmp/elasticsearch-php/src/Elasticsearch/Endpoints/Ping.php
+49,65d48
+< 
+<     /**
+<      * {@inheritdoc}
+<      */
+<     public function setCallback(Callable $callback)
+<     {
+<         $this->callback = function($response) use ($callback) {
+<             if (isset($response['status']) === true && $response['status'] === 200) {
+<                 $result = true;
+<             } else {
+<                 $result = false;
+<             }
+<             call_user_func($callback, $result);
+<         };
+< 
+<         return $this;
+<     }
+diff -Nr ./src/Elasticsearch/Endpoints/Scroll.php /tmp/elasticsearch-php/src/Elasticsearch/Endpoints/Scroll.php
+90,100d89
+<     /**
+<      * {@inheritdoc}
+<      */
+<     public function setCallback(Callable $callback)
+<     {
+<         $this->callback = function($response) use ($callback) {
+<             call_user_func($callback, $response);
+<         };
+< 
+<         return $this;
+<     }
+diff -Nr ./src/Elasticsearch/Endpoints/Search.php /tmp/elasticsearch-php/src/Elasticsearch/Endpoints/Search.php
+96,97c96
+<         //wtf 到底是post还是get?
+<         return 'POST';
+---
+>         return 'GET';
+100,110d98
+<     /**
+<      * {@inheritdoc}
+<      */
+<     public function setCallback(Callable $callback)
+<     {
+<         $this->callback = function($response) use ($callback) {
+<             call_user_func($callback, $response);
+<         };
+< 
+<         return $this;
+<     }
+diff -Nr ./src/Elasticsearch/Endpoints/Suggest.php /tmp/elasticsearch-php/src/Elasticsearch/Endpoints/Suggest.php
+78,89d77
+< 
+<     /**
+<      * {@inheritdoc}
+<      */
+<     public function setCallback(Callable $callback)
+<     {
+<         $this->callback = function($response) use ($callback) {
+<             call_user_func($callback, $response);
+<         };
+< 
+<         return $this;
+<     }
+diff -Nr ./src/Elasticsearch/Endpoints/Update.php /tmp/elasticsearch-php/src/Elasticsearch/Endpoints/Update.php
+107,118d106
+< 
+<     /**
+<      * {@inheritdoc}
+<      */
+<     public function setCallback(Callable $callback)
+<     {
+<         $this->callback = function($response) use ($callback) {
+<             call_user_func($callback, $response);
+<         };
+< 
+<         return $this;
+<     }
+diff -Nr ./src/Elasticsearch/TransportNoBlocking.php /tmp/elasticsearch-php/src/Elasticsearch/TransportNoBlocking.php
+1,63d0
+< <?php
+< /**
+<  * User: zach
+<  * Date: 5/1/13
+<  * Time: 9:51 PM
+<  */
+< 
+< namespace Elasticsearch;
+< 
+< use Elasticsearch\Common\Exceptions;
+< use Elasticsearch\Serializers\SerializerInterface;
+< 
+< use Elasticsearch\Connections\SwooleConnection;
+< 
+< 
+< class TransportNoBlocking
+< {
+<     /**
+<      * @var SerializerInterface
+<      */
+<     private $serializer;
+< 
+<     private $host;
+<     private $callback;
+< 
+<     public function __construct($hosts, $params)
+<     {
+<         if (is_array($hosts) !== true) {
+<             throw new Exceptions\InvalidArgumentException('Hosts parameter must be an array');
+<         }
+< 
+<         $this->serializer = $params['serializer'];
+< 
+<         $this->host = $hosts[0];
+<     }
+< 
+<     public function setCallback(callable $callback)
+<     {
+<         $this->callback = $callback;
+<         return $this;
+<     }
+< 
+<     public function performRequest($method, $uri, $params = null, $body = null)
+<     {
+<         if (isset($body) === true) {
+<             $body = $this->serializer->serialize($body);
+<         }
+< 
+<         if (is_array($params) && !empty($params)) {
+<             $uri .= "?" . http_build_query($params);
+<         }
+<         $connection = new SwooleConnection($this->host['host'], $this->host['port']);
+<         $connection->setMethod($method)->setUri($uri)->setData($body)->handle($this->getFilterResponseCallback());
+<     }
+< 
+<     private function getFilterResponseCallback()
+<     {
+<         return function($response) {
+<             $data = $this->serializer->deserialize($response);
+<             call_user_func($this->callback, $data);
+<         };
+<     }
+< }
+\ No newline at end of file

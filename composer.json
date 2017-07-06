@@ -1,5 +1,5 @@
 {
-    "name": "elasticsearch/yz-elasticsearch-client",
+    "name": "zanphp/es-sdk",
     "description": "PHP No Blocking Client for Elasticsearch",
     "keywords": [
         "search",
@@ -31,12 +31,6 @@
         "psr-0": {
             "Elasticsearch\\Tests": "tests/",
             "Elasticsearch\\Benchmarks": "benchmarks/"
-        }
-    },
-    "repositories": {
-        "packagist": {
-            "type": "composer",
-            "url": "http://packagist.qima-inc.com"
         }
     },
     "config": {
